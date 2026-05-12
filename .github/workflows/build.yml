@@ -35,6 +35,12 @@ jobs:
     - name: Generate Xcode project
       run: xcodegen generate
 
+    - name: Resolve SPM packages
+      run: |
+        xcodebuild -resolvePackageDependencies \
+          -project AIExcuseMaker.xcodeproj \
+          -scheme AIExcuseMaker
+
     - name: Patch Info.plist build number
       run: |
         sed -i "" "s|<string>\$(CURRENT_PROJECT_VERSION)</string>|<string>$BUILD_NUM</string>|" AIExcuseMaker/Info.plist
