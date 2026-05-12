@@ -98,6 +98,17 @@ jobs:
           sleep 60
         done
 
+    - name: Upload IPA
+      run: |
+        IPA_PATH=$(ls build/export/*.ipa | head -1)
+        echo "Uploading: $IPA_PATH"
+        xcrun altool --upload-app \
+          -f "$IPA_PATH" \
+          -t ios \
+          --apiKey WDXGY9WX55 \
+          --apiIssuer 2be0734f-943a-4d61-9dc9-5d9045c46fec \
+          --verbose 2>&1 || true
+
     - name: Install PyJWT
       run: pip3 install --break-system-packages PyJWT requests
 

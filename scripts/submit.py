@@ -8,7 +8,7 @@ BUILD_NUMBER = sys.argv[1]
 SCREENSHOT_DIR = "MarketingAssets/Screenshots"
 
 SCREENSHOT_GROUPS = [
-    ("APP_IPHONE_69", ["iphone69_01_home.png","iphone69_02_category.png","iphone69_03_result.png","iphone69_04_history.png"]),
+    ("APP_IPHONE_67", ["iphone69_01_home.png","iphone69_02_category.png","iphone69_03_result.png","iphone69_04_history.png"]),
     ("APP_IPHONE_65", ["iphone65_01_home.png","iphone65_02_category.png","iphone65_03_result.png","iphone65_04_history.png"]),
     ("APP_IPHONE_55", ["iphone55_01_home.png","iphone55_02_category.png","iphone55_03_result.png","iphone55_04_history.png"]),
     ("APP_IPAD_PRO_3GEN_129", ["ipad129_01_home.png","ipad129_02_category.png","ipad129_03_result.png","ipad129_04_history.png"]),
@@ -117,10 +117,8 @@ def upload_screenshots(version_id):
                 for op in body["data"]["attributes"]["uploadOperations"]:
                     op_h = {h["name"]: h["value"] for h in op["requestHeaders"]}
                     requests.put(op["url"], headers=op_h, data=data[op["offset"]:op["offset"]+op["length"]], timeout=90)
-                for _ in range(12):
-                    r = api("POST", f"/appScreenshots/{ss_id}/commit", json={"data": {"type": "appScreenshots", "id": ss_id, "attributes": {"sourceFileChecksum": checksum}}})
-                    if r.status_code in (200, 201): print(f"      OK: {filename}"); break
-                    time.sleep(10)
+                r = api("PATCH", f"/appScreenshots/{ss_id}", json={"data": {"type": "appScreenshots", "id": ss_id, "attributes": {"uploaded": True, "sourceFileChecksum": checksum}}})
+                if r.status_code == 200: print(f"      OK: {filename}")
 
 def update_locs(version_id):
     locs = list_all(f"/appStoreVersions/{version_id}/appStoreVersionLocalizations?limit=200")
