@@ -35,11 +35,8 @@ jobs:
     - name: Generate Xcode project
       run: xcodegen generate
 
-    - name: Resolve SPM packages
-      run: |
-        xcodebuild -resolvePackageDependencies \
-          -project AIExcuseMaker.xcodeproj \
-          -scheme AIExcuseMaker
+    - name: Install CocoaPods
+      run: pod install
 
     - name: Patch Info.plist build number
       run: |
@@ -72,6 +69,7 @@ jobs:
     - name: Build Archive
       run: |
         xcodebuild archive \
+          -workspace AIExcuseMaker.xcworkspace \
           -scheme AIExcuseMaker \
           -configuration Release \
           -destination "generic/platform=iOS" \

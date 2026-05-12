@@ -4,11 +4,6 @@ options:
   deploymentTarget:
     iOS: "18.0"
 
-packages:
-  GoogleMobileAds:
-    url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
-    version: 11.13.0
-
 settings:
   base:
     SWIFT_VERSION: 5.9
@@ -24,8 +19,6 @@ targets:
     type: application
     platform: iOS
     sources: [AIExcuseMaker]
-    dependencies:
-      - package: GoogleMobileAds
     settings:
       base:
         PRODUCT_NAME: AIExcuseMaker
